@@ -1,2 +1,2 @@
 # Servo_stand
-Seftware and data ti treak from the stan for SiPM tests.
+Software to treat data from the stand for test with SiPM and lightcollectors.
