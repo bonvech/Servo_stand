@@ -1,3 +1,2 @@
 # Servo_stand
-Software to treat data from the stand for test with SiPM and lightcollectors.
-Ok
+Software to treat data from the stand to test SiPM and lightcollectors.
