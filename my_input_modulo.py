@@ -1,5 +1,5 @@
 ## Main function
-def clear_read_and_plot(file):
+def clear_read_and_plot(filen):
     ## Подключение библиотек
     import numpy as np
     import pandas as pd
@@ -21,12 +21,12 @@ def clear_read_and_plot(file):
 
     # clear initial data text file from blank lines and extra symbols with awk linux utilite
     #!awk -f clear_data.awk $file > "clear_"$file
-    command = 'awk -f clear_data.awk ' + file + ' > clear_' + file
+    command = 'awk -f clear_data.awk ./Data/' + filen + ' > Clear/clear_' + filen
     os.system(command)
    
 
     # read clear data file to pandas dataframe
-    filename = './clear_' + file
+    filename = './Clear/clear_' + filen
     datum = pd.read_csv(filename, index_col=False, sep='\s+', skiprows=10)
     #print(datum.head(2))
 
@@ -35,12 +35,12 @@ def clear_read_and_plot(file):
     params = ["T[C]", "U+_SiPM[V]", "U-_SiPM[V]", "t[s]", "I0_SiPM[uA]"]
     figs = len(params)
     fig, axn = plt.subplots(figs, 1, sharex=False,  figsize=(10, 2*figs))
-    axn[0].set_title(filename[8:-4])
+    axn[0].set_title(filen[:-4])
     for i, param in enumerate(params):
         axn[i].plot(datum[param], "*", label=param)
         axn[i].grid()
         axn[i].legend()
-    plt.savefig(filename[8:-4]+"_params.png", dpi=300,  bbox_inches='tight')
+    plt.savefig('./Figs/' + filen[:-4]+"_params.png", dpi=300,  bbox_inches='tight')
 
 
     ## plot horizontal angle distributions
@@ -57,14 +57,14 @@ def clear_read_and_plot(file):
                 title="Vertical angle")
     plt.xlabel("Horizontal angle [grad]")
     plt.ylabel("I_SiPM [uA]")
-    plt.title(filename[8:-4])
+    plt.title(filen[:-4])
     # сетка
     plt.minorticks_on()
     plt.grid()
     # Внешний вид линий вспомогательной сетки:
     plt.grid(which='minor', color = 'k', linestyle = ':')
     # Сохраняем график в файл
-    plt.savefig(filename[8:-3]+"png", dpi=300,  bbox_inches='tight')
+    plt.savefig('./Figs/' + filen[:-3] + "png", dpi=300,  bbox_inches='tight')
 
 
     ## fit with polynom all the data
