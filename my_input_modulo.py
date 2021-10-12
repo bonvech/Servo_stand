@@ -28,6 +28,7 @@ def clear_read_and_plot(filen):
     # read clear data file to pandas dataframe
     filename = './Clear/clear_' + filen
     datum = pd.read_csv(filename, index_col=False, sep='\s+', skiprows=10)
+    datum["I_SiPM_uA"] = datum["I_SiPM[uA]"] - datum["I0_SiPM[uA]"]
     #print(datum.head(2))
 
 
@@ -87,3 +88,13 @@ def clear_read_and_plot(filen):
     plt.grid(which='minor', color = 'k', linestyle = ':')
     plt.grid()
 
+
+    ## save data to file to further fitting
+    data = datum[datum["Vert.angl[grad]."] == grads[0]]
+    newdata = data[['Hor.angl[grad]','I_SiPM_uA']][:181]
+    newdata.rename(columns = {'I_SiPM_uA':grads[0], 'Hor.angl[grad]':'Hor_ang'}, inplace = True) 
+    for grad in grads[1:]:
+        data = datum[datum["Vert.angl[grad]."] == grad] 
+        newdata[grad] = data['I_SiPM_uA'].tolist()
+    #print(newdata)
+    newdata.to_csv("Data_to_fit/" + filen[:-3] + "dat", float_format="%.3f", sep='\t')
